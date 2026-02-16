@@ -25,7 +25,13 @@ SECRET_KEY = 'django-insecure-=ifr64dxef8kme@)okus#ub_uw&^8e$qbml*3+#%+-o1c5)zy0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+# CORS settings
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = ['*']
+CORS_ALLOW_METHODS = ['*']
 
 
 # Application definition
@@ -47,9 +53,14 @@ INSTALLED_APPS = [
     'dj_rest_auth.registration',
     'users_app',
     'activities_app',
+    'leaderboard_app',
+    'workouts_app',
+    'djongo',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -86,7 +97,7 @@ WSGI_APPLICATION = 'octofit_tracker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'octofit_tracker_db',
+        'NAME': 'octofit_db',
         'CLIENT': {
             'host': 'mongodb://127.0.0.1:27017',
         }

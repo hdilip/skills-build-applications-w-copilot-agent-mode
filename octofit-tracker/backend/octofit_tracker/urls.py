@@ -17,14 +17,32 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
+
 from users_app.views import ProfileViewSet
 from activities_app.views import ActivityViewSet
+from leaderboard_app.views import LeaderboardEntryViewSet
+from workouts_app.views import WorkoutViewSet
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
 
 router = routers.DefaultRouter()
 router.register(r'profiles', ProfileViewSet)
 router.register(r'activities', ActivityViewSet)
+router.register(r'leaderboard', LeaderboardEntryViewSet)
+router.register(r'workouts', WorkoutViewSet)
+
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'profiles': reverse('profile-list', request=request, format=format),
+        'activities': reverse('activity-list', request=request, format=format),
+        'leaderboard': reverse('leaderboardentry-list', request=request, format=format),
+        'workouts': reverse('workout-list', request=request, format=format),
+    })
 
 urlpatterns = [
+    path('', api_root, name='api-root'),
     path('admin/', admin.site.urls),
     path('auth/', include('dj_rest_auth.urls')),
     path('auth/registration/', include('dj_rest_auth.registration.urls')),
